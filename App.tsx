@@ -13,13 +13,12 @@ import AuthModal from './components/AuthModal';
 import { User, TimerMode } from './types';
 import { supabase } from './lib/supabase';
 
-// Functional component to handle scroll reset on navigation and state changes
+// Component to force scroll to top on every navigation or state change
 const ScrollToTop = ({ activeTool, isLoggedIn }: { activeTool: TimerMode | null; isLoggedIn: boolean }) => {
   const { pathname } = useLocation();
   
   useLayoutEffect(() => {
-    // Force immediate jump to top on any major navigation or state change
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
   }, [pathname, activeTool, isLoggedIn]);
   
   return null;
@@ -40,7 +39,6 @@ const AppContent: React.FC<{
     if (location.pathname !== '/') {
       navigate('/');
     }
-    // Force immediate scroll to top on tool select
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
   };
 
@@ -83,6 +81,7 @@ const AppContent: React.FC<{
             <Route path="/about" element={<AboutUs />} />
             <Route path="/terms" element={<TermsConditions />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
         <Footer onSelectTool={handleToolSelect} onLogin={onLogin} isLoggedIn={user.isLoggedIn} />
@@ -104,7 +103,7 @@ const App: React.FC = () => {
 
   const fetchUserProfile = async (userId: string, email: string) => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('profiles')
         .select('full_name')
         .eq('id', userId)
@@ -148,7 +147,7 @@ const App: React.FC = () => {
         const userData = await fetchUserProfile(session.user.id, session.user.email || '');
         setUser(userData);
         setIsAuthModalOpen(false);
-      } else {
+      } else if (_event === 'SIGNED_OUT') {
         setUser({ id: '', name: '', email: '', isLoggedIn: false });
         setActiveTool(null);
       }
