@@ -6,7 +6,7 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export const logTimerUsage = async (userId: string, type: string, durationMs: number, category: string = 'General') => {
+export const logTimerUsage = async (userId: string, type: string, durationMs: number, category: string = 'General', metadata: any = null) => {
   if (!userId || userId === '') {
     console.warn('Sync skipped: No valid User ID provided.');
     return;
@@ -22,15 +22,13 @@ export const logTimerUsage = async (userId: string, type: string, durationMs: nu
         timer_type: type, 
         duration_ms: durationMs, 
         category,
+        metadata: metadata, // New field for detailed metrics
         created_at: new Date().toISOString()
       }
     ]);
     
   if (error) {
     console.error('Database Sync Error:', error.message);
-    if (error.message.includes('403')) {
-      console.error('Hint: Check RLS policies on timer_logs table.');
-    }
   } else {
     console.log('Successfully synced session to Chronos Cloud.');
   }

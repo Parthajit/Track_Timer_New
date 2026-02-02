@@ -9,7 +9,6 @@ import {
   Clock, 
   AlarmClock as AlarmIcon,
   LayoutDashboard,
-  Timer,
   Home as HomeIcon
 } from 'lucide-react';
 import { TimerMode } from '../types';
@@ -31,7 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool, currentPath
   ];
 
   return (
-    <aside className="fixed bottom-0 left-0 w-full h-16 lg:h-screen lg:w-20 bg-[#0B1120]/80 backdrop-blur-3xl border-t lg:border-t-0 lg:border-r border-slate-800 z-[60] flex lg:flex-col items-center justify-around lg:justify-start lg:pt-8 lg:gap-4 px-2">
+    <aside className="fixed bottom-0 left-0 w-full h-16 lg:h-screen lg:w-20 bg-[#0B1120]/95 backdrop-blur-3xl border-t lg:border-t-0 lg:border-r border-slate-800 z-[60] flex lg:flex-col items-center justify-around lg:justify-start lg:pt-8 lg:gap-4 px-2 safe-bottom">
       {/* Home / Reset Link */}
       <Link
         to="/"

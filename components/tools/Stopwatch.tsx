@@ -12,11 +12,9 @@ const Stopwatch: React.FC<StopwatchProps> = ({ userId }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [lastSyncStatus, setLastSyncStatus] = useState<'idle' | 'syncing' | 'success'>('idle');
   const timerRef = useRef<number | null>(null);
-  const sessionStartTimeRef = useRef<number>(0);
 
   useEffect(() => {
     if (isRunning) {
-      sessionStartTimeRef.current = Date.now();
       timerRef.current = window.setInterval(() => {
         setTime((prevTime) => prevTime + 10);
       }, 10);
@@ -60,7 +58,7 @@ const Stopwatch: React.FC<StopwatchProps> = ({ userId }) => {
   const formatted = formatTime(time);
 
   return (
-    <div className="bg-[#0B1120] border border-slate-800 p-6 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] flex flex-col items-center justify-center min-h-[350px] sm:min-h-[400px] shadow-2xl relative overflow-hidden">
+    <div className="bg-[#0B1120] border border-slate-800 p-8 sm:p-12 rounded-[2.5rem] flex flex-col items-center justify-center min-h-[400px] shadow-2xl relative overflow-hidden w-full max-w-4xl mx-auto">
       {userId && (
         <div className="absolute top-4 right-6 sm:top-6 sm:right-8 flex items-center gap-2">
           {lastSyncStatus === 'success' ? (
@@ -75,49 +73,48 @@ const Stopwatch: React.FC<StopwatchProps> = ({ userId }) => {
         </div>
       )}
       
-      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em] text-slate-500 mb-6 sm:mb-8">Stopwatch</span>
+      <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] text-slate-500 mb-8">Stopwatch</span>
       
-      <div className="flex items-baseline mb-8 sm:mb-12 select-none">
-        {/* Dynamic scaling font for mobile */}
-        <div className="text-[15vw] sm:text-9xl font-black text-white tabular-nums tracking-tighter drop-shadow-2xl">
+      <div className="flex items-baseline mb-12 select-none">
+        <div className="timer-display font-black text-white tabular-nums tracking-tighter drop-shadow-2xl">
           {formatted.main}
         </div>
-        <div className="text-[6vw] sm:text-5xl font-bold text-blue-600/50 ml-1 sm:ml-2 tabular-nums">
+        <div className="timer-ms font-bold text-blue-600/50 ml-1 sm:ml-2 tabular-nums">
           .{formatted.ms}
         </div>
       </div>
       
-      <div className="flex gap-3 sm:gap-4 w-full max-w-sm">
+      <div className="flex gap-4 w-full max-w-md">
         <button
           onClick={handleStartStop}
-          className={`flex-1 flex items-center justify-center gap-2 sm:gap-3 py-4 sm:py-5 rounded-2xl sm:rounded-[1.5rem] font-black uppercase tracking-widest text-xs sm:text-sm transition-all shadow-xl active:scale-[0.97] ${
+          className={`flex-1 flex items-center justify-center gap-3 py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-xs sm:text-sm transition-all shadow-xl active:scale-95 ${
             isRunning 
               ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' 
               : 'bg-blue-600 text-white hover:bg-blue-500 shadow-blue-600/20'
           }`}
         >
-          {isRunning ? <Pause className="w-4 h-4 sm:w-5 sm:h-5 fill-current" /> : <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />}
+          {isRunning ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current" />}
           {isRunning ? 'Pause' : 'Start'}
         </button>
         <button
           onClick={handleReset}
-          className="px-6 sm:px-8 flex items-center justify-center bg-slate-900 border border-slate-800 text-slate-500 hover:bg-slate-800 hover:text-white py-4 sm:py-5 rounded-2xl sm:rounded-[1.5rem] transition-all group"
+          className="px-8 flex items-center justify-center bg-slate-900 border border-slate-800 text-slate-500 hover:bg-slate-800 hover:text-white py-5 rounded-[1.5rem] transition-all group"
           title="Reset"
         >
-          <RotateCcw className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-[-45deg] transition-transform" />
+          <RotateCcw className="w-5 h-5 sm:w-6 h-6 group-hover:rotate-[-45deg] transition-transform" />
         </button>
       </div>
 
-      <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-4 sm:gap-8 w-full max-w-xs text-center border-t border-slate-800/50 pt-6 sm:pt-8">
+      <div className="mt-12 grid grid-cols-2 gap-8 w-full max-w-xs text-center border-t border-slate-800/50 pt-8">
         <div>
-          <p className="text-[9px] sm:text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Status</p>
-          <p className={`text-[10px] sm:text-xs font-bold uppercase ${isRunning ? 'text-emerald-500' : 'text-slate-400'}`}>
+          <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Status</p>
+          <p className={`text-[10px] font-bold uppercase ${isRunning ? 'text-emerald-500' : 'text-slate-400'}`}>
             {isRunning ? 'Running' : 'Stopped'}
           </p>
         </div>
         <div>
-          <p className="text-[9px] sm:text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total</p>
-          <p className="text-[10px] sm:text-xs font-bold text-white uppercase">{time > 0 ? (time/1000).toFixed(1) + 's' : '--'}</p>
+          <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Session</p>
+          <p className="text-[10px] font-bold text-white uppercase">{time > 0 ? (time/1000).toFixed(1) + 's' : '--'}</p>
         </div>
       </div>
     </div>
