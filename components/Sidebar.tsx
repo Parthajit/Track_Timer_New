@@ -9,7 +9,8 @@ import {
   Clock, 
   AlarmClock as AlarmIcon,
   LayoutDashboard,
-  Timer
+  Timer,
+  Home as HomeIcon
 } from 'lucide-react';
 import { TimerMode } from '../types';
 
@@ -31,6 +32,24 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool, currentPath
 
   return (
     <aside className="fixed bottom-0 left-0 w-full h-16 lg:h-screen lg:w-20 bg-[#0B1120]/80 backdrop-blur-3xl border-t lg:border-t-0 lg:border-r border-slate-800 z-[60] flex lg:flex-col items-center justify-around lg:justify-start lg:pt-8 lg:gap-4 px-2">
+      {/* Home / Reset Link */}
+      <Link
+        to="/"
+        className={`p-3 rounded-2xl transition-all group relative ${
+          currentPath === '/' && activeTool === null
+          ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' 
+          : 'text-slate-500 hover:text-white hover:bg-slate-800'
+        }`}
+        onClick={() => onSelectTool(null)}
+      >
+        <HomeIcon className="w-5 h-5" />
+        <span className="absolute left-full ml-4 px-3 py-1.5 bg-slate-900 text-[9px] font-black uppercase tracking-widest text-white rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap hidden lg:block border border-slate-800">
+          Tools Home
+        </span>
+      </Link>
+
+      <div className="hidden lg:block w-8 h-px bg-slate-800 my-2" />
+
       {/* Dashboard Link */}
       <Link
         to="/dashboard"

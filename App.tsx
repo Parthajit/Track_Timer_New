@@ -13,13 +13,14 @@ import AuthModal from './components/AuthModal';
 import { User, TimerMode } from './types';
 import { supabase } from './lib/supabase';
 
-// Functional component to handle scroll reset on navigation
-const ScrollToTop = ({ activeTool }: { activeTool: TimerMode | null }) => {
+// Functional component to handle scroll reset on navigation and state changes
+const ScrollToTop = ({ activeTool, isLoggedIn }: { activeTool: TimerMode | null; isLoggedIn: boolean }) => {
   const { pathname } = useLocation();
   
   useLayoutEffect(() => {
+    // Force immediate jump to top on any major navigation or state change
     window.scrollTo(0, 0);
-  }, [pathname, activeTool]);
+  }, [pathname, activeTool, isLoggedIn]);
   
   return null;
 };
@@ -40,12 +41,12 @@ const AppContent: React.FC<{
       navigate('/');
     }
     // Force immediate scroll to top on tool select
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
   };
 
   return (
     <div className="flex min-h-screen bg-[#020617] text-slate-200 selection:bg-blue-500/30">
-      <ScrollToTop activeTool={activeTool} />
+      <ScrollToTop activeTool={activeTool} isLoggedIn={user.isLoggedIn} />
       {user.isLoggedIn && (
         <Sidebar 
           activeTool={activeTool} 
@@ -59,9 +60,10 @@ const AppContent: React.FC<{
           isLoggedIn={user.isLoggedIn} 
           userName={user.name} 
           onLogin={onLogin} 
-          onLogout={handleLogout} 
+          onLogout={handleLogout}
+          onLogoClick={() => handleToolSelect(null)}
         />
-        <main className={`flex-1 container mx-auto px-4 py-6 ${user.isLoggedIn ? 'lg:pl-8' : ''}`}>
+        <main className={`flex-1 container mx-auto px-4 py-6 mb-16 lg:mb-0 ${user.isLoggedIn ? 'lg:pl-20' : ''}`}>
           <Routes>
             <Route 
               path="/" 
@@ -157,6 +159,7 @@ const App: React.FC = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
   };
 
   if (isLoading) {
