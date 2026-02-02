@@ -96,7 +96,8 @@ const Home: React.FC<HomeProps> = ({ user, onLogin, activeTool, setActiveTool })
                 <div className="absolute -right-12 -top-12 w-40 h-40 bg-blue-500/5 rounded-full blur-[60px] group-hover:bg-blue-500/10 transition-colors" />
                 
                 <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl mb-10 text-slate-500 group-hover:text-blue-400 group-hover:bg-blue-600/5 group-hover:border-blue-500/20 transition-all duration-500">
-                  {React.cloneElement(tool.icon as React.ReactElement, { className: 'w-8 h-8' })}
+                  {/* Fixed line 99: Cast to React.ReactElement<any> to fix 'className' property existence check error */}
+                  {React.cloneElement(tool.icon as React.ReactElement<any>, { className: 'w-8 h-8' })}
                 </div>
                 
                 <div className="space-y-4 w-full">
