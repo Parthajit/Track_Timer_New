@@ -4,7 +4,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chronos Pro - Timing Suite</title>
+    <title>Track My Timer | Free Online Stopwatch & Countdown</title>
+    <meta name="description" content="A professional suite of free online timing tools including stopwatch, countdown, lap timer, and interval tracking with personal analytics." />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -12,6 +13,7 @@
         font-family: 'Inter', sans-serif;
         background-color: #020617;
         color: #f8fafc;
+        overflow-x: hidden;
       }
       .bg-grid {
         background-image: linear-gradient(to right, #ffffff05 1px, transparent 1px),
@@ -21,6 +23,20 @@
       input[type="date"]::-webkit-calendar-picker-indicator {
         filter: invert(1);
         cursor: pointer;
+      }
+      /* Custom Scrollbar for better aesthetics */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #020617;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3b82f6;
       }
     </style>
   <script type="importmap">
@@ -39,5 +55,6 @@
 </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
