@@ -89,14 +89,14 @@ const Home: React.FC<HomeProps> = ({ user, onLogin, activeTool, setActiveTool })
                 key={tool.id}
                 onClick={() => {
                   setActiveTool(tool.id);
-                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="group relative flex flex-col items-start p-10 rounded-[2.5rem] bg-[#0B1120] border border-slate-800/40 hover:border-blue-500/30 hover:bg-[#0E1629] transition-all duration-500 overflow-hidden text-left shadow-2xl"
               >
                 <div className="absolute -right-12 -top-12 w-40 h-40 bg-blue-500/5 rounded-full blur-[60px] group-hover:bg-blue-500/10 transition-colors" />
                 
                 <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl mb-10 text-slate-500 group-hover:text-blue-400 group-hover:bg-blue-600/5 group-hover:border-blue-500/20 transition-all duration-500">
-                  {React.cloneElement(tool.icon as React.ReactElement<any>, { className: 'w-8 h-8' })}
+                  {React.cloneElement(tool.icon as React.ReactElement, { className: 'w-8 h-8' })}
                 </div>
                 
                 <div className="space-y-4 w-full">
@@ -117,7 +117,7 @@ const Home: React.FC<HomeProps> = ({ user, onLogin, activeTool, setActiveTool })
           </section>
         </>
       ) : (
-        <section className="max-w-5xl mx-auto w-full min-h-[500px] animate-in fade-in duration-700">
+        <section className="max-w-5xl mx-auto w-full min-h-[500px] animate-in slide-in-from-bottom-8 duration-700">
           <div className="flex items-center justify-between mb-10 px-6">
             <button 
               onClick={() => setActiveTool(null)}
