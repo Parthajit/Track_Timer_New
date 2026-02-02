@@ -126,6 +126,11 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    // Failsafe timer to prevent stuck loading screen
+    const failsafe = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
     const initAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -136,6 +141,7 @@ const App: React.FC = () => {
       } catch (err) {
         console.error("Auth init error:", err);
       } finally {
+        clearTimeout(failsafe);
         setIsLoading(false);
       }
     };
@@ -153,7 +159,10 @@ const App: React.FC = () => {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(failsafe);
+    };
   }, []);
 
   const handleLogout = async () => {
