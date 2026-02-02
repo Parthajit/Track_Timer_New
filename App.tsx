@@ -126,10 +126,10 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    // Failsafe timer to prevent stuck loading screen
+    // Reduced failsafe timer to 1.5s to improve perceived speed
     const failsafe = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 1500);
 
     const initAuth = async () => {
       try {
